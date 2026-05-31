@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字音乐作曲工作坊 Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎹 数字音乐作曲工作坊 Pro</h1>
+            <div class="controls">
+                <button id="playBtn" class="btn primary">▶ 播放</button>
+                <button id="stopBtn" class="btn">⏹ 停止</button>
+                <button id="recordBtn" class="btn danger">⏺ 录音</button>
+                <button id="saveBtn" class="btn success">💾 保存</button>
+                <button id="loadBtn" class="btn">📂 加载</button>
+                <button id="publishBtn" class="btn">🌐 发布</button>
+                <button id="communityBtn" class="btn">👥 社区</button>
+            </div>
+            <div class="settings">
+                <label>速度: <input type="range" id="tempo" min="60" max="200" value="120"> <span id="tempoValue">120</span> BPM</label>
+                <label>拍号: 
+                    <select id="timeSignature">
+                        <option value="4/4">4/4</option>
+                        <option value="3/4">3/4</option>
+                        <option value="6/8">6/8</option>
+                    </select>
+                </label>
+                <label>调: 
+                    <select id="keySignature">
+                        <option value="C">C大调</option>
+                        <option value="G">G大调</option>
+                        <option value="D">D大调</option>
+                        <option value="A">A大调</option>
+                        <option value="F">F大调</option>
+                        <option value="Am">A小调</option>
+                    </select>
+                </label>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <h3>🎼 和弦伴奏</h3>
+                    <div class="chord-progression" id="chordProgression"></div>
+                    <div class="chord-controls">
+                        <select id="chordSelect">
+                            <option value="C">C</option>
+                            <option value="Cm">Cm</option>
+                            <option value="Dm">Dm</option>
+                            <option value="D">D</option>
+                            <option value="Em">Em</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="Fm">Fm</option>
+                            <option value="G">G</option>
+                            <option value="Gm">Gm</option>
+                            <option value="Am">Am</option>
+                            <option value="A">A</option>
+                            <option value="Bdim">Bdim</option>
+                            <option value="B">B</option>
+                        </select>
+                        <button id="addChord" class="btn small">+ 添加</button>
+                        <button id="generateChords" class="btn small">🎲 自动生成</button>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>🥁 鼓点生成器</h3>
+                    <div class="drum-patterns">
+                        <div class="drum-track">
+                            <span>底鼓</span>
+                            <div class="drum-steps" data-drum="kick"></div>
+                        </div>
+                        <div class="drum-track">
+                            <span>军鼓</span>
+                            <div class="drum-steps" data-drum="snare"></div>
+                        </div>
+                        <div class="drum-track">
+                            <span>踩镲</span>
+                            <div class="drum-steps" data-drum="hihat"></div>
+                        </div>
+                        <div class="drum-track">
+                            <span>通鼓</span>
+                            <div class="drum-steps" data-drum="tom"></div>
+                        </div>
+                    </div>
+                    <div class="drum-controls">
+                        <button id="clearDrums" class="btn small">清空</button>
+                        <button id="randomDrums" class="btn small">🎲 随机</button>
+                        <select id="drumPreset">
+                            <option value="rock">摇滚</option>
+                            <option value="pop">流行</option>
+                            <option value="funk">放克</option>
+                            <option value="jazz">爵士</option>
+                            <option value="edm">电子</option>
+                        </select>
+                        <button id="applyDrumPreset" class="btn small">应用预设</button>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>🎛️ 混音台</h3>
+                    <div id="mixer" class="mixer">
+                        <div class="mixer-channel" data-channel="melody">
+                            <span class="channel-name">主旋律</span>
+                            <input type="range" class="channel-volume" min="0" max="100" value="80" vertical>
+                            <span class="channel-value">80%</span>
+                            <button class="mute-btn" data-channel="melody">M</button>
+                            <button class="solo-btn" data-channel="melody">S</button>
+                        </div>
+                        <div class="mixer-channel" data-channel="chords">
+                            <span class="channel-name">和弦</span>
+                            <input type="range" class="channel-volume" min="0" max="100" value="60" vertical>
+                            <span class="channel-value">60%</span>
+                            <button class="mute-btn" data-channel="chords">M</button>
+                            <button class="solo-btn" data-channel="chords">S</button>
+                        </div>
+                        <div class="mixer-channel" data-channel="drums">
+                            <span class="channel-name">鼓组</span>
+                            <input type="range" class="channel-volume" min="0" max="100" value="70" vertical>
+                            <span class="channel-value">70%</span>
+                            <button class="mute-btn" data-channel="drums">M</button>
+                            <button class="solo-btn" data-channel="drums">S</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>✨ 效果器</h3>
+                    <div class="effects">
+                        <div class="effect">
+                            <h4>混响 (Reverb)</h4>
+                            <label>
+                                <input type="checkbox" id="reverbEnabled"> 启用
+                            </label>
+                            <label>
+                                湿信号: <input type="range" id="reverbWet" min="0" max="100" value="30"> <span id="reverbWetValue">30</span>%
+                            </label>
+                            <label>
+                                衰减: <input type="range" id="reverbDecay" min="0.1" max="5" step="0.1" value="2"> <span id="reverbDecayValue">2.0</span>s
+                            </label>
+                        </div>
+                        <div class="effect">
+                            <h4>延迟 (Delay)</h4>
+                            <label>
+                                <input type="checkbox" id="delayEnabled"> 启用
+                            </label>
+                            <label>
+                                湿信号: <input type="range" id="delayWet" min="0" max="100" value="25"> <span id="delayWetValue">25</span>%
+                            </label>
+                            <label>
+                                时间: <input type="range" id="delayTime" min="100" max="1000" step="50" value="300"> <span id="delayTimeValue">300</span>ms
+                            </label>
+                            <label>
+                                反馈: <input type="range" id="delayFeedback" min="0" max="80" value="40"> <span id="delayFeedbackValue">40</span>%
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="piano-roll-container">
+                <div class="piano-keys" id="pianoKeys"></div>
+                <div class="piano-roll" id="pianoRoll">
+                    <div class="grid" id="grid"></div>
+                    <div class="notes" id="notes"></div>
+                    <div class="playhead" id="playhead"></div>
+                    <div class="beat-markers" id="beatMarkers"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <span id="midiStatus">🎹 MIDI键盘: 未连接</span>
+            <span id="status">就绪</span>
+            <span id="time">00:00.000</span>
+            <span id="currentBar">小节: 1</span>
+        </div>
+    </div>
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="modalTitle">保存作品</h3>
+            <input type="text" id="workName" placeholder="作品名称">
+            <textarea id="workDescription" placeholder="作品描述（选填）"></textarea>
+            <div class="modal-buttons">
+                <button id="cancelBtn" class="btn">取消</button>
+                <button id="confirmBtn" class="btn primary">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="communityModal" class="modal hidden">
+        <div class="modal-content large">
+            <h3>🌐 音乐社区</h3>
+            <div class="community-tabs">
+                <button class="tab-btn active" data-tab="all">全部作品</button>
+                <button class="tab-btn" data-tab="popular">热门</button>
+                <button class="tab-btn" data-tab="recent">最新</button>
+            </div>
+            <div id="communityWorks" class="works-grid"></div>
+            <div class="modal-buttons">
+                <button id="closeCommunityBtn" class="btn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

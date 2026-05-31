@@ -1,0 +1,49 @@
+{
+  "name": "digital-music-workshop",
+  "version": "1.0.0",
+  "description": "数字音乐作曲工作坊",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
+    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testPathPattern=unit --verbose",
+    "test:integration": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testPathPattern=integration --verbose",
+    "test:api": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testPathPattern=api --verbose",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "jsdom": "^23.0.1",
+    "web-audio-test-api": "^0.6.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "transform": {},
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "testMatch": [
+      "**/test/**/*.test.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/setup.js"
+    ],
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "app.js",
+      "audio-engine.js",
+      "music-utils.js",
+      "server.js"
+    ]
+  }
+}
